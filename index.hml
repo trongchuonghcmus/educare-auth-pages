@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Educare Connect - Xác thực</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+          "Oxygen", "Ubuntu", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 480px;
+        width: 100%;
+      }
+
+      .logo-section {
+        text-align: center;
+        margin-bottom: 30px;
+        animation: fadeInDown 0.6s ease-out;
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .logo {
+        width: 80px;
+        height: 80px;
+        background: white;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        font-weight: bold;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        margin-bottom: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .app-name {
+        color: white;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 4px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .tagline {
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .card {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.6s ease-out 0.2s both;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .status-container {
+        text-align: center;
+      }
+
+      /* Loading State */
+      .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 24px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        color: #666;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      /* Status Icons */
+      .status-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        font-size: 48px;
+        animation: scaleIn 0.5s ease-out;
+      }
+
+      @keyframes scaleIn {
+        from {
+          transform: scale(0);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+
+      .success-icon {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+      }
+
+      .error-icon {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+      }
+
+      .status-title {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #2d3748;
+      }
+
+      .status-message {
+        color: #4a5568;
+        line-height: 1.7;
+        margin-bottom: 24px;
+        font-size: 15px;
+      }
+
+      .error-details {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffe8a1 100%);
+        border: 2px solid #ffc107;
+        border-radius: 12px;
+        padding: 16px;
+        margin: 20px 0;
+        font-size: 13px;
+        color: #856404;
+        text-align: left;
+        font-family: "Courier New", monospace;
+        word-break: break-word;
+      }
+
+      /* Buttons */
+      .btn {
+        display: block;
+        width: 100%;
+        padding: 16px 32px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        text-align: center;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+        color: #2d3748;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 12px;
+      }
+
+      .btn-secondary:hover {
+        background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .auto-redirect {
+        margin-top: 16px;
+        padding: 12px;
+        background: #f7fafc;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #718096;
+      }
+
+      .countdown {
+        font-weight: 700;
+        color: #667eea;
+      }
+
+      /* Footer */
+      .footer {
+        text-align: center;
+        color: white;
+        margin-top: 24px;
+        font-size: 14px;
+        opacity: 0.95;
+        animation: fadeIn 1s ease-out 0.8s both;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .footer a {
+        color: white;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      }
+
+      .footer a:hover {
+        border-bottom-color: white;
+      }
+
+      /* Hidden class */
+      .hidden {
+        display: none !important;
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .card {
+          padding: 32px 24px;
+        }
+
+        .status-title {
+          font-size: 22px;
+        }
+
+        .app-name {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Logo Section -->
+      <div class="logo-section">
+        <div class="logo">EC</div>
+        <div class="app-name">Educare Connect</div>
+        <div class="tagline">Ứng dụng giáo dục đặc biệt</div>
+      </div>
+
+      <!-- Main Card -->
+      <div class="card">
+        <!-- Loading State -->
+        <div id="loading-state" class="status-container">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">Đang xử lý yêu cầu của bạn...</div>
+        </div>
+
+        <!-- Success State -->
+        <div id="success-state" class="status-container hidden">
+          <div class="status-icon success-icon">✓</div>
+          <h1 class="status-title" id="success-title">Thành công!</h1>
+          <p class="status-message" id="success-message"></p>
+          <a href="#" id="success-btn" class="btn">Mở ứng dụng</a>
+          <div class="auto-redirect" id="auto-redirect">
+            Tự động chuyển trong
+            <span class="countdown" id="countdown">3</span> giây...
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="status-container hidden">
+          <div class="status-icon error-icon">✕</div>
+          <h1 class="status-title" id="error-title">Có lỗi xảy ra</h1>
+          <p class="status-message" id="error-message"></p>
+          <div id="error-details" class="error-details hidden"></div>
+          <button onclick="retryAuth()" class="btn">Thử lại</button>
+          <button onclick="window.close()" class="btn btn-secondary">
+            Đóng trang
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        © 2025 Educare Connect<br />
+        <a href="mailto:support@educareconnect.com"
+          >support@educareconnect.com</a
+        >
+      </div>
+    </div>
+
+    <script>
+      // Parse URL parameters from both query string and hash
+      function getParams() {
+        const params = new URLSearchParams(window.location.search);
+        const hash = new URLSearchParams(window.location.hash.substring(1));
+
+        return {
+          type: params.get("type") || hash.get("type"),
+          access_token: hash.get("access_token") || params.get("access_token"),
+          refresh_token:
+            hash.get("refresh_token") || params.get("refresh_token"),
+          error: params.get("error") || hash.get("error"),
+          error_description:
+            params.get("error_description") || hash.get("error_description"),
+          error_code: params.get("error_code") || hash.get("error_code"),
+        };
+      }
+
+      const params = getParams();
+      let countdownInterval;
+
+      // Show different states
+      function showLoading() {
+        document.getElementById("loading-state").classList.remove("hidden");
+        document.getElementById("success-state").classList.add("hidden");
+        document.getElementById("error-state").classList.add("hidden");
+      }
+
+      function showSuccess(title, message, deepLink) {
+        document.getElementById("loading-state").classList.add("hidden");
+        document.getElementById("success-state").classList.remove("hidden");
+        document.getElementById("error-state").classList.add("hidden");
+
+        document.getElementById("success-title").textContent = title;
+        document.getElementById("success-message").textContent = message;
+
+        const btn = document.getElementById("success-btn");
+        btn.href = deepLink;
+        btn.onclick = () => {
+          window.location.href = deepLink;
+        };
+
+        // Start countdown
+        startCountdown(deepLink);
+      }
+
+      function showError(title, message, details = null) {
+        document.getElementById("loading-state").classList.add("hidden");
+        document.getElementById("success-state").classList.add("hidden");
+        document.getElementById("error-state").classList.remove("hidden");
+
+        document.getElementById("error-title").textContent = title;
+        document.getElementById("error-message").textContent = message;
+
+        if (details) {
+          const detailsEl = document.getElementById("error-details");
+          detailsEl.textContent = details;
+          detailsEl.classList.remove("hidden");
+        }
+      }
+
+      // Countdown timer
+      function startCountdown(deepLink) {
+        let seconds = 3;
+        const countdownEl = document.getElementById("countdown");
+
+        countdownInterval = setInterval(() => {
+          seconds--;
+          countdownEl.textContent = seconds;
+
+          if (seconds <= 0) {
+            clearInterval(countdownInterval);
+            window.location.href = deepLink;
+          }
+        }, 1000);
+      }
+
+      // Retry function
+      function retryAuth() {
+        clearInterval(countdownInterval);
+        showLoading();
+        setTimeout(handleAuth, 500);
+      }
+
+      // Main authentication handler
+      function handleAuth() {
+        console.log("Params received:", params);
+
+        // Check for errors first
+        if (params.error) {
+          const errorMessages = {
+            access_denied: "Bạn đã từ chối quyền truy cập.",
+            server_error: "Lỗi máy chủ. Vui lòng thử lại sau.",
+            temporarily_unavailable: "Dịch vụ tạm thời không khả dụng.",
+            invalid_request: "Yêu cầu không hợp lệ.",
+            unauthorized_client: "Ứng dụng không được ủy quyền.",
+            invalid_grant: "Token không hợp lệ hoặc đã hết hạn.",
+          };
+
+          showError(
+            "Xác thực thất bại",
+            errorMessages[params.error] ||
+              "Không thể hoàn tất xác thực. Vui lòng thử lại.",
+            params.error_description || params.error
+          );
+          return;
+        }
+
+        // Handle different authentication types
+        switch (params.type) {
+          case "signup":
+            handleSignup();
+            break;
+          case "recovery":
+            handleRecovery();
+            break;
+          case "email_change":
+            handleEmailChange();
+            break;
+          case "invite":
+            handleInvite();
+            break;
+          case "magiclink":
+            handleMagicLink();
+            break;
+          default:
+            showError(
+              "Yêu cầu không hợp lệ",
+              "Không tìm thấy loại xác thực. Vui lòng kiểm tra lại link từ email.",
+              `Type: ${params.type || "undefined"}`
+            );
+        }
+      }
+
+      function handleSignup() {
+        if (params.access_token && params.refresh_token) {
+          const deepLink = `educareconnect://auth/confirmed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          showSuccess(
+            "Xác nhận thành công!",
+            "Email của bạn đã được xác thực. Bạn có thể đăng nhập vào ứng dụng Educare Connect ngay bây giờ.",
+            deepLink
+          );
+        } else {
+          showError(
+            "Lỗi xác nhận",
+            "Link xác nhận không hợp lệ hoặc đã hết hạn.",
+            "Vui lòng yêu cầu gửi lại email xác nhận từ ứng dụng."
+          );
+        }
+      }
+
+      function handleRecovery() {
+        if (params.access_token && params.refresh_token) {
+          const deepLink = `educareconnect://auth/reset-password?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          showSuccess(
+            "Link hợp lệ!",
+            "Bạn sẽ được chuyển đến ứng dụng để tạo mật khẩu mới. Vui lòng nhập mật khẩu mới trong ứng dụng.",
+            deepLink
+          );
+        } else {
+          showError(
+            "Link không hợp lệ",
+            "Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.",
+            "Vui lòng yêu cầu gửi lại link đặt lại mật khẩu từ ứng dụng."
+          );
+        }
+      }
+
+      function handleEmailChange() {
+        if (params.access_token && params.refresh_token) {
+          const deepLink = `educareconnect://auth/email-changed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          showSuccess(
+            "Email đã cập nhật!",
+            "Email mới của bạn đã được xác nhận thành công. Vui lòng sử dụng email mới cho các lần đăng nhập tiếp theo.",
+            deepLink
+          );
+        } else {
+          showError(
+            "Xác nhận thất bại",
+            "Không thể xác nhận email mới. Link có thể đã hết hạn hoặc không hợp lệ.",
+            "Vui lòng thử lại từ cài đặt trong ứng dụng."
+          );
+        }
+      }
+
+      function handleInvite() {
+        if (params.access_token && params.refresh_token) {
+          const deepLink = `educareconnect://auth/invite-accepted?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          showSuccess(
+            "Chào mừng bạn!",
+            "Lời mời đã được chấp nhận. Bạn có thể đăng nhập vào ứng dụng ngay bây giờ.",
+            deepLink
+          );
+        } else {
+          showError(
+            "Lời mời không hợp lệ",
+            "Link lời mời không hợp lệ hoặc đã hết hạn.",
+            "Vui lòng yêu cầu gửi lại lời mời."
+          );
+        }
+      }
+
+      function handleMagicLink() {
+        if (params.access_token && params.refresh_token) {
+          const deepLink = `educareconnect://auth/magiclink?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          showSuccess(
+            "Đăng nhập thành công!",
+            "Bạn đang được chuyển đến ứng dụng...",
+            deepLink
+          );
+        } else {
+          showError(
+            "Link không hợp lệ",
+            "Magic link không hợp lệ hoặc đã hết hạn.",
+            "Vui lòng yêu cầu gửi lại magic link mới."
+          );
+        }
+      }
+
+      // Initialize
+      window.addEventListener("load", () => {
+        showLoading();
+        // Simulate processing time for better UX
+        setTimeout(handleAuth, 1200);
+      });
+
+      // Clean up on page unload
+      window.addEventListener("beforeunload", () => {
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+        }
+      });
+    </script>
+  </body>
+</html>
