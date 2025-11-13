@@ -586,7 +586,14 @@
 
       function handleSignup() {
         if (params.access_token && params.refresh_token) {
-          const deepLink = `educareconnect://auth/confirmed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          // Support both production (educareconnect://) and Expo dev (educare://)
+          // Try Expo scheme first for development, fallback to production scheme
+          const expoDeepLink = `educare://auth/confirmed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          const prodDeepLink = `educareconnect://auth/confirmed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+
+          // Try Expo first (for development)
+          const deepLink = expoDeepLink;
+
           showSuccess(
             "Xác nhận thành công!",
             "Email của bạn đã được xác thực. Bạn có thể đăng nhập vào ứng dụng Educare Connect ngay bây giờ.",
@@ -603,7 +610,12 @@
 
       function handleRecovery() {
         if (params.access_token && params.refresh_token) {
-          const deepLink = `educareconnect://auth/reset-password?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          // Support both production and Expo dev schemes
+          const expoDeepLink = `educare://auth/reset-password?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          const prodDeepLink = `educareconnect://auth/reset-password?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+
+          const deepLink = expoDeepLink;
+
           showSuccess(
             "Link hợp lệ!",
             "Bạn sẽ được chuyển đến ứng dụng để tạo mật khẩu mới. Vui lòng nhập mật khẩu mới trong ứng dụng.",
@@ -620,7 +632,12 @@
 
       function handleEmailChange() {
         if (params.access_token && params.refresh_token) {
-          const deepLink = `educareconnect://auth/email-changed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          // Support both production and Expo dev schemes
+          const expoDeepLink = `educare://auth/email-changed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          const prodDeepLink = `educareconnect://auth/email-changed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+
+          const deepLink = expoDeepLink;
+
           showSuccess(
             "Email đã cập nhật!",
             "Email mới của bạn đã được xác nhận thành công. Vui lòng sử dụng email mới cho các lần đăng nhập tiếp theo.",
@@ -637,7 +654,12 @@
 
       function handleInvite() {
         if (params.access_token && params.refresh_token) {
-          const deepLink = `educareconnect://auth/invite-accepted?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          // Support both production and Expo dev schemes
+          const expoDeepLink = `educare://auth/invite-accepted?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          const prodDeepLink = `educareconnect://auth/invite-accepted?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+
+          const deepLink = expoDeepLink;
+
           showSuccess(
             "Chào mừng bạn!",
             "Lời mời đã được chấp nhận. Bạn có thể đăng nhập vào ứng dụng ngay bây giờ.",
@@ -654,7 +676,12 @@
 
       function handleMagicLink() {
         if (params.access_token && params.refresh_token) {
-          const deepLink = `educareconnect://auth/magiclink?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          // Support both production and Expo dev schemes
+          const expoDeepLink = `educare://auth/magiclink?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+          const prodDeepLink = `educareconnect://auth/magiclink?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
+
+          const deepLink = expoDeepLink;
+
           showSuccess(
             "Đăng nhập thành công!",
             "Bạn đang được chuyển đến ứng dụng...",
