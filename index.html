@@ -362,78 +362,79 @@
         return lengthValid && matchValid;
       }
 
-      // Update password with Supabase (for invited users)
+      // Accept invite and set password with Supabase
       async function acceptInviteAndSetPassword(accessToken, password) {
+        console.log("Setting password for invited user...");
+
         const SUPABASE_URL = "https://jlmjhcwmvpxvmuppzdks.supabase.co";
         const SUPABASE_ANON_KEY =
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpsbWpoY3dtdnB4dm11cHB6ZGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA4MDUwNjQsImV4cCI6MjA0NjM4MTA2NH0.QgYN5Lg0FZS1q5JGLLwdH3fS5m3Fj3yAm31DgvHG2AQ";
 
-        console.log("Setting password for invited user...");
+        try {
+          // Step 1: Verify the token by getting user info
+          console.log("Step 1: Verifying invite token...");
+          const verifyResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              apikey: SUPABASE_ANON_KEY,
+            },
+          });
 
-        // First, verify the invite token by getting user info
-        const verifyResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-            apikey: SUPABASE_ANON_KEY,
-          },
-        });
+          if (!verifyResponse.ok) {
+            const error = await verifyResponse.json();
+            console.error("Token verification failed:", error);
+            throw new Error(error.msg || "Token không hợp lệ hoặc đã hết hạn");
+          }
 
-        if (!verifyResponse.ok) {
-          const error = await verifyResponse.json();
-          console.error("Verify token error:", error);
-          throw new Error("Token không hợp lệ hoặc đã hết hạn");
+          const userData = await verifyResponse.json();
+          console.log("User verified:", userData);
+
+          // Step 2: Update password
+          console.log("Step 2: Updating password...");
+          const updateResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+              apikey: SUPABASE_ANON_KEY,
+            },
+            body: JSON.stringify({
+              password: password,
+            }),
+          });
+
+          if (!updateResponse.ok) {
+            const error = await updateResponse.json();
+            console.error("Password update failed:", error);
+            throw new Error(error.msg || "Không thể cập nhật mật khẩu");
+          }
+
+          const result = await updateResponse.json();
+          console.log("Password updated successfully:", result);
+
+          // Return both user and session data
+          return {
+            user: result.user || userData,
+            session: result,
+          };
+        } catch (error) {
+          console.error("Error in acceptInviteAndSetPassword:", error);
+          throw error;
         }
-
-        const userData = await verifyResponse.json();
-        console.log("User verified:", userData);
-
-        // Now update the password
-        const updateResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-            apikey: SUPABASE_ANON_KEY,
-          },
-          body: JSON.stringify({
-            password: password,
-          }),
-        });
-
-        if (!updateResponse.ok) {
-          const error = await updateResponse.json();
-          console.error("Update password error:", error);
-          throw new Error(error.msg || error.message || "Không thể cập nhật mật khẩu");
-        }
-
-        const result = await updateResponse.json();
-        console.log("Password updated successfully:", result);
-        
-        return {
-          user: result.user || userData,
-          session: result,
-        };
       }
 
       // Open app with deep link
       function openApp(accessToken, refreshToken) {
-        // Build deep link with available tokens
-        let deepLink = `educareconnect://auth?access_token=${accessToken}&type=invite`;
-        if (refreshToken) {
-          deepLink += `&refresh_token=${refreshToken}`;
-        }
-
-        console.log("Opening app with deep link:", deepLink);
+        const deepLink = `educareconnect://auth?access_token=${accessToken}&refresh_token=${refreshToken}&type=invite`;
 
         // Try to open the app
         window.location.href = deepLink;
 
         // Fallback: Show manual instruction after 3 seconds
         setTimeout(() => {
+          // Still on this page means app didn't open
           console.log("App might not be installed or failed to open");
-          // You could show a message here with download links
         }, 3000);
       }
 
@@ -500,17 +501,34 @@
           submitBtn.textContent = "Đang xử lý...";
 
           try {
-            // Update password via Supabase API
-            await updatePassword(accessToken, password);
+            // Accept invite and set password via Supabase API
+            const result = await acceptInviteAndSetPassword(
+              accessToken,
+              password
+            );
+
+            console.log("Success:", result);
+
+            // Extract new tokens if available
+            const newAccessToken = result.session?.access_token || accessToken;
+            const newRefreshToken =
+              result.session?.refresh_token || refreshToken;
+
+            // Store updated tokens
+            sessionStorage.setItem("access_token", newAccessToken);
+            if (newRefreshToken) {
+              sessionStorage.setItem("refresh_token", newRefreshToken);
+            }
 
             // Show success
             showSuccess();
 
-            // Wait a bit then open app
+            // Wait a bit then open app with new tokens
             setTimeout(() => {
-              openApp(accessToken, refreshToken);
+              openApp(newAccessToken, newRefreshToken);
             }, 1500);
           } catch (error) {
+            console.error("Error:", error);
             alert("Lỗi: " + error.message);
             submitBtn.disabled = false;
             submitBtn.textContent = "Xác nhận mật khẩu";
