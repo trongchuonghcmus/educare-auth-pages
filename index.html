@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Educare Connect - Xác thực</title>
+    <title>Kích hoạt tài khoản - Educare Connect</title>
     <style>
       * {
         margin: 0;
@@ -12,8 +12,8 @@
       }
 
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-          "Oxygen", "Ubuntu", sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         display: flex;
@@ -23,89 +23,77 @@
       }
 
       .container {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         max-width: 480px;
         width: 100%;
+        overflow: hidden;
       }
 
-      .logo-section {
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 40px 30px;
         text-align: center;
-        margin-bottom: 30px;
-        animation: fadeInDown 0.6s ease-out;
-      }
-
-      @keyframes fadeInDown {
-        from {
-          opacity: 0;
-          transform: translateY(-20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        color: white;
       }
 
       .logo {
         width: 80px;
         height: 80px;
         background: white;
-        border-radius: 20px;
+        border-radius: 16px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .logo-text {
         font-size: 36px;
         font-weight: bold;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        margin-bottom: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
-      .app-name {
-        color: white;
-        font-size: 28px;
+      .header h1 {
+        font-size: 24px;
         font-weight: 700;
-        margin-bottom: 4px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 0;
       }
 
-      .tagline {
-        color: rgba(255, 255, 255, 0.95);
-        font-size: 15px;
-        font-weight: 500;
+      .content {
+        padding: 40px 30px;
       }
 
-      .card {
-        background: white;
-        border-radius: 24px;
-        padding: 40px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        animation: fadeInUp 0.6s ease-out 0.2s both;
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .status-container {
+      .status {
         text-align: center;
+        padding: 20px;
       }
 
-      /* Loading State */
-      .loading-spinner {
-        width: 60px;
-        height: 60px;
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #667eea;
+      .status.loading {
+        color: #4a5568;
+      }
+
+      .status.error {
+        color: #e53e3e;
+      }
+
+      .status.success {
+        color: #38a169;
+      }
+
+      .spinner {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
         border-radius: 50%;
+        width: 40px;
+        height: 40px;
         animation: spin 1s linear infinite;
-        margin: 0 auto 24px;
+        margin: 0 auto 16px;
       }
 
       @keyframes spin {
@@ -117,598 +105,383 @@
         }
       }
 
-      .loading-text {
-        color: #666;
-        font-size: 16px;
-        font-weight: 500;
+      .form-group {
+        margin-bottom: 20px;
       }
 
-      /* Status Icons */
-      .status-icon {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 24px;
-        font-size: 48px;
-        animation: scaleIn 0.5s ease-out;
-      }
-
-      @keyframes scaleIn {
-        from {
-          transform: scale(0);
-        }
-        to {
-          transform: scale(1);
-        }
-      }
-
-      .success-icon {
-        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-      }
-
-      .error-icon {
-        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-      }
-
-      .status-title {
-        font-size: 26px;
-        font-weight: 700;
-        margin-bottom: 12px;
-        color: #2d3748;
-      }
-
-      .status-message {
-        color: #4a5568;
-        line-height: 1.7;
-        margin-bottom: 24px;
-        font-size: 15px;
-      }
-
-      .error-details {
-        background: linear-gradient(135deg, #fff3cd 0%, #ffe8a1 100%);
-        border: 2px solid #ffc107;
-        border-radius: 12px;
-        padding: 16px;
-        margin: 20px 0;
-        font-size: 13px;
-        color: #856404;
-        text-align: left;
-        font-family: "Courier New", monospace;
-        word-break: break-word;
-      }
-
-      /* Buttons */
-      .btn {
+      .form-group label {
         display: block;
-        width: 100%;
-        padding: 16px 32px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        text-decoration: none;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        text-align: center;
-      }
-
-      .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-      }
-
-      .btn:active {
-        transform: translateY(0);
-      }
-
-      .btn-secondary {
-        background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+        margin-bottom: 8px;
         color: #2d3748;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        margin-top: 12px;
+        font-weight: 600;
+        font-size: 14px;
       }
 
-      .btn-secondary:hover {
-        background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      .form-group input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s;
       }
 
-      .auto-redirect {
-        margin-top: 16px;
+      .form-group input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .password-requirements {
+        margin-top: 8px;
         padding: 12px;
         background: #f7fafc;
-        border-radius: 8px;
+        border-radius: 6px;
         font-size: 13px;
+      }
+
+      .password-requirements li {
+        margin: 4px 0;
         color: #718096;
       }
 
-      .countdown {
-        font-weight: 700;
-        color: #667eea;
+      .password-requirements li.valid {
+        color: #38a169;
       }
 
-      /* Desktop instructions */
-      .desktop-instructions {
-        margin-top: 20px;
-        padding: 20px;
-        background: linear-gradient(135deg, #fff3cd 0%, #ffe8a1 100%);
-        border: 2px solid #ffc107;
-        border-radius: 12px;
+      .password-requirements li.invalid {
+        color: #e53e3e;
       }
 
-      .desktop-instructions h3 {
-        color: #856404;
-        font-size: 16px;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .desktop-instructions ol {
-        color: #856404;
-        font-size: 14px;
-        margin-left: 20px;
-        line-height: 1.8;
-      }
-
-      .desktop-instructions li {
-        margin-bottom: 8px;
-      }
-
-      .qr-placeholder {
-        margin-top: 16px;
-        padding: 20px;
-        background: white;
+      .btn {
+        width: 100%;
+        padding: 14px 24px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
         border-radius: 8px;
-        text-align: center;
-        font-size: 13px;
-        color: #666;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
       }
 
-      /* Footer */
+      .btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .info-box {
+        margin-top: 20px;
+        padding: 16px;
+        background: #ebf8ff;
+        border-left: 4px solid #4299e1;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #2c5282;
+      }
+
+      .error-box {
+        margin-top: 20px;
+        padding: 16px;
+        background: #fff5f5;
+        border-left: 4px solid #fc8181;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #c53030;
+      }
+
+      .success-box {
+        margin-top: 20px;
+        padding: 16px;
+        background: #f0fff4;
+        border-left: 4px solid #68d391;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #2f855a;
+      }
+
       .footer {
         text-align: center;
-        color: white;
-        margin-top: 24px;
-        font-size: 14px;
-        opacity: 0.95;
-        animation: fadeIn 1s ease-out 0.8s both;
+        padding: 20px;
+        color: #a0aec0;
+        font-size: 13px;
       }
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      .footer a {
-        color: white;
-        text-decoration: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-      }
-
-      .footer a:hover {
-        border-bottom-color: white;
-      }
-
-      /* Hidden class */
-      .hidden {
-        display: none !important;
-      }
-
-      /* Responsive */
-      @media (max-width: 480px) {
-        .card {
-          padding: 32px 24px;
-        }
-
-        .status-title {
-          font-size: 22px;
-        }
-
-        .app-name {
-          font-size: 24px;
-        }
+      #passwordForm {
+        display: none;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <!-- Logo Section -->
-      <div class="logo-section">
-        <div class="logo">EC</div>
-        <div class="app-name">Educare Connect</div>
-        <div class="tagline">Ứng dụng giáo dục đặc biệt</div>
+      <!-- Header -->
+      <div class="header">
+        <div class="logo">
+          <span class="logo-text">EC</span>
+        </div>
+        <h1>Educare Connect</h1>
       </div>
 
-      <!-- Main Card -->
-      <div class="card">
-        <!-- Loading State -->
-        <div id="loading-state" class="status-container">
-          <div class="loading-spinner"></div>
-          <div class="loading-text">Đang xử lý yêu cầu của bạn...</div>
+      <!-- Content -->
+      <div class="content">
+        <!-- Loading Status -->
+        <div id="loadingStatus" class="status loading">
+          <div class="spinner"></div>
+          <p>Đang xử lý yêu cầu của bạn...</p>
         </div>
 
-        <!-- Success State -->
-        <div id="success-state" class="status-container hidden">
-          <div class="status-icon success-icon">✓</div>
-          <h1 class="status-title" id="success-title">Thành công!</h1>
-          <p class="status-message" id="success-message"></p>
-
-          <!-- Mobile: Auto redirect -->
-          <div id="mobile-redirect" class="hidden">
-            <a href="#" id="success-btn" class="btn">Mở ứng dụng</a>
-            <div class="auto-redirect" id="auto-redirect">
-              Tự động chuyển trong
-              <span class="countdown" id="countdown">3</span> giây...
-            </div>
-          </div>
-
-          <!-- Desktop: Instructions -->
-          <div id="desktop-instructions" class="hidden">
-            <div class="desktop-instructions">
-              <h3>
-                <span>💻</span>
-                <span>Bạn đang sử dụng máy tính</span>
-              </h3>
-              <p style="margin-bottom: 12px; font-size: 14px">
-                Để hoàn tất đăng nhập, vui lòng mở ứng dụng trên điện thoại:
-              </p>
-              <ol>
-                <li>
-                  Mở ứng dụng <strong>Educare Connect</strong> trên điện thoại
-                </li>
-                <li>Đăng nhập với email và mật khẩu vừa tạo</li>
-                <li>Bạn đã sẵn sàng sử dụng!</li>
-              </ol>
-              <div class="qr-placeholder">
-                📱 Quét mã QR để tải ứng dụng<br />
-                <small style="color: #999">(Coming soon)</small>
-              </div>
-            </div>
-            <button
-              onclick="window.close()"
-              class="btn btn-secondary"
-              style="margin-top: 16px"
-            >
-              Đóng trang này
-            </button>
-          </div>
+        <!-- Error Status -->
+        <div id="errorStatus" class="status error" style="display: none">
+          <h2 style="margin-bottom: 12px">❌ Có lỗi xảy ra</h2>
+          <p id="errorMessage"></p>
         </div>
 
-        <!-- Error State -->
-        <div id="error-state" class="status-container hidden">
-          <div class="status-icon error-icon">✕</div>
-          <h1 class="status-title" id="error-title">Có lỗi xảy ra</h1>
-          <p class="status-message" id="error-message"></p>
-          <div id="error-details" class="error-details hidden"></div>
-          <button onclick="retryAuth()" class="btn">Thử lại</button>
-          <button onclick="window.close()" class="btn btn-secondary">
-            Đóng trang
+        <!-- Password Form -->
+        <form id="passwordForm">
+          <h2 style="margin-bottom: 20px; color: #2d3748">
+            🔐 Tạo mật khẩu mới
+          </h2>
+
+          <div class="form-group">
+            <label for="password">Mật khẩu mới</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Nhập mật khẩu mới"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Xác nhận mật khẩu</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              placeholder="Nhập lại mật khẩu"
+              required
+            />
+          </div>
+
+          <div class="password-requirements">
+            <strong>Yêu cầu mật khẩu:</strong>
+            <ul id="requirements">
+              <li id="req-length">• Tối thiểu 8 ký tự</li>
+              <li id="req-match">• Mật khẩu khớp nhau</li>
+            </ul>
+          </div>
+
+          <button type="submit" class="btn" id="submitBtn">
+            Xác nhận mật khẩu
           </button>
+
+          <div class="info-box">
+            💡 Sau khi tạo mật khẩu, bạn sẽ được chuyển đến ứng dụng để đăng
+            nhập.
+          </div>
+        </form>
+
+        <!-- Success Status -->
+        <div id="successStatus" style="display: none">
+          <div class="status success">
+            <h2 style="margin-bottom: 12px">✅ Thành công!</h2>
+            <p>Mật khẩu đã được thiết lập. Đang mở ứng dụng...</p>
+          </div>
+          <div class="success-box">
+            Nếu ứng dụng không tự động mở, vui lòng mở ứng dụng Educare Connect
+            và đăng nhập bằng email và mật khẩu vừa tạo.
+          </div>
         </div>
       </div>
 
       <!-- Footer -->
       <div class="footer">
         © 2025 Educare Connect<br />
-        <a href="mailto:support@educareconnect.com"
-          >support@educareconnect.com</a
+        <a
+          href="mailto:support@educareconnect.com"
+          style="color: #667eea; text-decoration: none"
         >
+          support@educareconnect.com
+        </a>
       </div>
     </div>
 
     <script>
-      // Parse URL parameters from both query string and hash
-      function getParams() {
-        const params = new URLSearchParams(window.location.search);
-        const hash = new URLSearchParams(window.location.hash.substring(1));
-
+      // Parse URL hash parameters
+      function parseHashParams() {
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
         return {
-          type: params.get("type") || hash.get("type"),
-          access_token: hash.get("access_token") || params.get("access_token"),
-          refresh_token:
-            hash.get("refresh_token") || params.get("refresh_token"),
-          error: params.get("error") || hash.get("error"),
-          error_description:
-            params.get("error_description") || hash.get("error_description"),
-          error_code: params.get("error_code") || hash.get("error_code"),
+          access_token: params.get("access_token"),
+          refresh_token: params.get("refresh_token"),
+          type: params.get("type"),
+          error: params.get("error"),
+          error_description: params.get("error_description"),
         };
       }
 
-      const params = getParams();
-      let countdownInterval;
-      let isMobile = false;
+      // Show error
+      function showError(message) {
+        document.getElementById("loadingStatus").style.display = "none";
+        document.getElementById("errorStatus").style.display = "block";
+        document.getElementById("errorMessage").textContent = message;
+      }
 
-      // Detect if user is on mobile device
-      function detectMobile() {
-        const userAgent = navigator.userAgent.toLowerCase();
-        const mobileKeywords = [
-          "android",
-          "iphone",
-          "ipad",
-          "ipod",
-          "mobile",
-          "phone",
-        ];
-        isMobile = mobileKeywords.some((keyword) =>
-          userAgent.includes(keyword)
-        );
+      // Show password form
+      function showPasswordForm() {
+        document.getElementById("loadingStatus").style.display = "none";
+        document.getElementById("passwordForm").style.display = "block";
+      }
 
-        // Also check screen size
-        if (!isMobile && window.innerWidth <= 768) {
-          isMobile = true;
+      // Show success
+      function showSuccess() {
+        document.getElementById("passwordForm").style.display = "none";
+        document.getElementById("successStatus").style.display = "block";
+      }
+
+      // Validate password
+      function validatePassword() {
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        const lengthValid = password.length >= 8;
+        const matchValid = password === confirmPassword && password.length > 0;
+
+        document.getElementById("req-length").className = lengthValid
+          ? "valid"
+          : "invalid";
+        document.getElementById("req-match").className = matchValid
+          ? "valid"
+          : "invalid";
+
+        return lengthValid && matchValid;
+      }
+
+      // Update password with Supabase
+      async function updatePassword(accessToken, password) {
+        // Get Supabase URL from environment or hardcode
+        const SUPABASE_URL = "https://jlmjhcwmvpxvmuppzdks.supabase.co";
+        const SUPABASE_ANON_KEY =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpsbWpoY3dtdnB4dm11cHB6ZGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA4MDUwNjQsImV4cCI6MjA0NjM4MTA2NH0.QgYN5Lg0FZS1q5JGLLwdH3fS5m3Fj3yAm31DgvHG2AQ";
+
+        const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+            apikey: SUPABASE_ANON_KEY,
+          },
+          body: JSON.stringify({
+            password: password,
+          }),
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.msg || "Không thể cập nhật mật khẩu");
         }
 
-        console.log("Device detected:", isMobile ? "Mobile" : "Desktop");
-        return isMobile;
+        return await response.json();
       }
 
-      // Show different states
-      function showLoading() {
-        document.getElementById("loading-state").classList.remove("hidden");
-        document.getElementById("success-state").classList.add("hidden");
-        document.getElementById("error-state").classList.add("hidden");
+      // Open app with deep link
+      function openApp(accessToken, refreshToken) {
+        const deepLink = `educareconnect://auth?access_token=${accessToken}&refresh_token=${refreshToken}&type=invite`;
+
+        // Try to open the app
+        window.location.href = deepLink;
+
+        // Fallback: Show manual instruction after 3 seconds
+        setTimeout(() => {
+          // Still on this page means app didn't open
+          console.log("App might not be installed or failed to open");
+        }, 3000);
       }
 
-      function showSuccess(title, message, deepLink) {
-        document.getElementById("loading-state").classList.add("hidden");
-        document.getElementById("success-state").classList.remove("hidden");
-        document.getElementById("error-state").classList.add("hidden");
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        const params = parseHashParams();
 
-        document.getElementById("success-title").textContent = title;
-        document.getElementById("success-message").textContent = message;
-
-        // Detect device and show appropriate UI
-        detectMobile();
-
-        if (isMobile) {
-          // Mobile: Show button and auto-redirect
-          document.getElementById("mobile-redirect").classList.remove("hidden");
-          document
-            .getElementById("desktop-instructions")
-            .classList.add("hidden");
-
-          const btn = document.getElementById("success-btn");
-          btn.href = deepLink;
-          btn.onclick = () => {
-            window.location.href = deepLink;
-          };
-
-          // Start countdown
-          startCountdown(deepLink);
-        } else {
-          // Desktop: Show instructions
-          document.getElementById("mobile-redirect").classList.add("hidden");
-          document
-            .getElementById("desktop-instructions")
-            .classList.remove("hidden");
-        }
-      }
-
-      function showError(title, message, details = null) {
-        document.getElementById("loading-state").classList.add("hidden");
-        document.getElementById("success-state").classList.add("hidden");
-        document.getElementById("error-state").classList.remove("hidden");
-
-        document.getElementById("error-title").textContent = title;
-        document.getElementById("error-message").textContent = message;
-
-        if (details) {
-          const detailsEl = document.getElementById("error-details");
-          detailsEl.textContent = details;
-          detailsEl.classList.remove("hidden");
-        }
-      }
-
-      // Countdown timer
-      function startCountdown(deepLink) {
-        let seconds = 3;
-        const countdownEl = document.getElementById("countdown");
-
-        countdownInterval = setInterval(() => {
-          seconds--;
-          countdownEl.textContent = seconds;
-
-          if (seconds <= 0) {
-            clearInterval(countdownInterval);
-            window.location.href = deepLink;
-          }
-        }, 1000);
-      }
-
-      // Retry function
-      function retryAuth() {
-        clearInterval(countdownInterval);
-        showLoading();
-        setTimeout(handleAuth, 500);
-      }
-
-      // Main authentication handler
-      function handleAuth() {
-        console.log("Params received:", params);
-
-        // Check for errors first
+        // Check for errors
         if (params.error) {
-          const errorMessages = {
-            access_denied: "Bạn đã từ chối quyền truy cập.",
-            server_error: "Lỗi máy chủ. Vui lòng thử lại sau.",
-            temporarily_unavailable: "Dịch vụ tạm thời không khả dụng.",
-            invalid_request: "Yêu cầu không hợp lệ.",
-            unauthorized_client: "Ứng dụng không được ủy quyền.",
-            invalid_grant: "Token không hợp lệ hoặc đã hết hạn.",
-          };
-
           showError(
-            "Xác thực thất bại",
-            errorMessages[params.error] ||
-              "Không thể hoàn tất xác thực. Vui lòng thử lại.",
-            params.error_description || params.error
+            params.error_description || "Đã có lỗi xảy ra. Vui lòng thử lại."
           );
           return;
         }
 
-        // Handle different authentication types
-        switch (params.type) {
-          case "signup":
-            handleSignup();
-            break;
-          case "recovery":
-            handleRecovery();
-            break;
-          case "email_change":
-            handleEmailChange();
-            break;
-          case "invite":
-            handleInvite();
-            break;
-          case "magiclink":
-            handleMagicLink();
-            break;
-          default:
-            showError(
-              "Yêu cầu không hợp lệ",
-              "Không tìm thấy loại xác thực. Vui lòng kiểm tra lại link từ email.",
-              `Type: ${params.type || "undefined"}`
-            );
-        }
-      }
-
-      function handleSignup() {
-        if (params.access_token && params.refresh_token) {
-          // Support both production (educareconnect://) and Expo dev (educare://)
-          // Try Expo scheme first for development, fallback to production scheme
-          const expoDeepLink = `educare://auth/confirmed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
-          const prodDeepLink = `educareconnect://auth/confirmed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
-
-          // Try Expo first (for development)
-          const deepLink = expoDeepLink;
-
-          showSuccess(
-            "Xác nhận thành công!",
-            "Email của bạn đã được xác thực. Bạn có thể đăng nhập vào ứng dụng Educare Connect ngay bây giờ.",
-            deepLink
-          );
-        } else {
+        // Check for required tokens
+        if (!params.access_token) {
           showError(
-            "Lỗi xác nhận",
-            "Link xác nhận không hợp lệ hoặc đã hết hạn.",
-            "Vui lòng yêu cầu gửi lại email xác nhận từ ứng dụng."
+            "Link không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu giáo viên gửi lại lời mời."
           );
+          return;
         }
-      }
 
-      function handleRecovery() {
-        if (params.access_token && params.refresh_token) {
-          // Support both production and Expo dev schemes
-          const expoDeepLink = `educare://auth/reset-password?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
-          const prodDeepLink = `educareconnect://auth/reset-password?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
-
-          const deepLink = expoDeepLink;
-
-          showSuccess(
-            "Link hợp lệ!",
-            "Bạn sẽ được chuyển đến ứng dụng để tạo mật khẩu mới. Vui lòng nhập mật khẩu mới trong ứng dụng.",
-            deepLink
-          );
-        } else {
-          showError(
-            "Link không hợp lệ",
-            "Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.",
-            "Vui lòng yêu cầu gửi lại link đặt lại mật khẩu từ ứng dụng."
-          );
+        // Store tokens
+        sessionStorage.setItem("access_token", params.access_token);
+        if (params.refresh_token) {
+          sessionStorage.setItem("refresh_token", params.refresh_token);
         }
-      }
 
-      function handleEmailChange() {
-        if (params.access_token && params.refresh_token) {
-          // Support both production and Expo dev schemes
-          const expoDeepLink = `educare://auth/email-changed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
-          const prodDeepLink = `educareconnect://auth/email-changed?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
-
-          const deepLink = expoDeepLink;
-
-          showSuccess(
-            "Email đã cập nhật!",
-            "Email mới của bạn đã được xác nhận thành công. Vui lòng sử dụng email mới cho các lần đăng nhập tiếp theo.",
-            deepLink
-          );
-        } else {
-          showError(
-            "Xác nhận thất bại",
-            "Không thể xác nhận email mới. Link có thể đã hết hạn hoặc không hợp lệ.",
-            "Vui lòng thử lại từ cài đặt trong ứng dụng."
-          );
-        }
-      }
-
-      function handleInvite() {
-        if (params.access_token && params.refresh_token) {
-          // Support both production and Expo dev schemes
-          const expoDeepLink = `educare://auth/invite-accepted?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
-          const prodDeepLink = `educareconnect://auth/invite-accepted?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
-
-          const deepLink = expoDeepLink;
-
-          showSuccess(
-            "Chào mừng bạn!",
-            "Lời mời đã được chấp nhận. Bạn có thể đăng nhập vào ứng dụng ngay bây giờ.",
-            deepLink
-          );
-        } else {
-          showError(
-            "Lời mời không hợp lệ",
-            "Link lời mời không hợp lệ hoặc đã hết hạn.",
-            "Vui lòng yêu cầu gửi lại lời mời."
-          );
-        }
-      }
-
-      function handleMagicLink() {
-        if (params.access_token && params.refresh_token) {
-          // Support both production and Expo dev schemes
-          const expoDeepLink = `educare://auth/magiclink?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
-          const prodDeepLink = `educareconnect://auth/magiclink?access_token=${params.access_token}&refresh_token=${params.refresh_token}`;
-
-          const deepLink = expoDeepLink;
-
-          showSuccess(
-            "Đăng nhập thành công!",
-            "Bạn đang được chuyển đến ứng dụng...",
-            deepLink
-          );
-        } else {
-          showError(
-            "Link không hợp lệ",
-            "Magic link không hợp lệ hoặc đã hết hạn.",
-            "Vui lòng yêu cầu gửi lại magic link mới."
-          );
-        }
-      }
-
-      // Initialize
-      window.addEventListener("load", () => {
-        showLoading();
-        // Simulate processing time for better UX
-        setTimeout(handleAuth, 1200);
+        // Show password form
+        setTimeout(() => {
+          showPasswordForm();
+        }, 500);
       });
 
-      // Clean up on page unload
-      window.addEventListener("beforeunload", () => {
-        if (countdownInterval) {
-          clearInterval(countdownInterval);
-        }
+      // Password input validation
+      document.getElementById("password")?.addEventListener("input", () => {
+        validatePassword();
       });
+
+      document
+        .getElementById("confirmPassword")
+        ?.addEventListener("input", () => {
+          validatePassword();
+        });
+
+      // Form submission
+      document
+        .getElementById("passwordForm")
+        ?.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          if (!validatePassword()) {
+            alert("Vui lòng nhập mật khẩu hợp lệ");
+            return;
+          }
+
+          const password = document.getElementById("password").value;
+          const accessToken = sessionStorage.getItem("access_token");
+          const refreshToken = sessionStorage.getItem("refresh_token");
+
+          const submitBtn = document.getElementById("submitBtn");
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Đang xử lý...";
+
+          try {
+            // Update password via Supabase API
+            await updatePassword(accessToken, password);
+
+            // Show success
+            showSuccess();
+
+            // Wait a bit then open app
+            setTimeout(() => {
+              openApp(accessToken, refreshToken);
+            }, 1500);
+          } catch (error) {
+            alert("Lỗi: " + error.message);
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Xác nhận mật khẩu";
+          }
+        });
     </script>
   </body>
 </html>
