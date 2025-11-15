@@ -280,7 +280,7 @@
           </button>
 
           <div class="info-box">
-            💡 Sau khi tạo mật khẩu, bạn sẽ được chuyển đến ứng dụng để đăng
+            💡 Sau khi tạo mật khẩu, bạn sẽ nhận được nút để mở ứng dụng và đăng
             nhập.
           </div>
         </form>
@@ -289,12 +289,25 @@
         <div id="successStatus" style="display: none">
           <div class="status success">
             <h2 style="margin-bottom: 12px">✅ Thành công!</h2>
-            <p>Mật khẩu đã được thiết lập. Đang mở ứng dụng...</p>
+            <p>Mật khẩu đã được thiết lập thành công.</p>
           </div>
-          <div class="success-box">
-            Nếu ứng dụng không tự động mở, vui lòng mở ứng dụng Educare Connect
-            và đăng nhập bằng email và mật khẩu vừa tạo.
+          <button onclick="openAppManually()" class="btn" style="margin-top: 20px">
+            🚀 Mở ứng dụng
+          </button>
+          <div class="success-box" style="margin-top: 16px">
+            Nhấn nút trên để mở ứng dụng Educare Connect và đăng nhập bằng email và mật khẩu vừa tạo.
           </div>
+        </div>
+
+        <!-- Error Result -->
+        <div id="errorResult" style="display: none">
+          <div class="status error">
+            <h2 style="margin-bottom: 12px">❌ Lỗi</h2>
+            <p id="errorResultMessage"></p>
+          </div>
+          <button onclick="location.reload()" class="btn" style="margin-top: 20px; background: #e53e3e">
+            🔄 Thử lại
+          </button>
         </div>
       </div>
 
@@ -341,6 +354,20 @@
       function showSuccess() {
         document.getElementById("passwordForm").style.display = "none";
         document.getElementById("successStatus").style.display = "block";
+      }
+
+      // Show error result
+      function showErrorResult(message) {
+        document.getElementById("passwordForm").style.display = "none";
+        document.getElementById("errorResult").style.display = "block";
+        document.getElementById("errorResultMessage").textContent = message;
+      }
+
+      // Open app with deep link
+      function openAppManually() {
+        const accessToken = sessionStorage.getItem("access_token");
+        const refreshToken = sessionStorage.getItem("refresh_token");
+        openApp(accessToken, refreshToken);
       }
 
       // Validate password
@@ -428,14 +455,10 @@
       function openApp(accessToken, refreshToken) {
         const deepLink = `educareconnect://auth?access_token=${accessToken}&refresh_token=${refreshToken}&type=invite`;
 
+        console.log("Opening app with deep link:", deepLink);
+        
         // Try to open the app
         window.location.href = deepLink;
-
-        // Fallback: Show manual instruction after 3 seconds
-        setTimeout(() => {
-          // Still on this page means app didn't open
-          console.log("App might not be installed or failed to open");
-        }, 3000);
       }
 
       // Initialize
@@ -520,18 +543,12 @@
               sessionStorage.setItem("refresh_token", newRefreshToken);
             }
 
-            // Show success
+            // Show success with button
             showSuccess();
 
-            // Wait a bit then open app with new tokens
-            setTimeout(() => {
-              openApp(newAccessToken, newRefreshToken);
-            }, 1500);
           } catch (error) {
             console.error("Error:", error);
-            alert("Lỗi: " + error.message);
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Xác nhận mật khẩu";
+            showErrorResult(error.message || "Đã có lỗi xảy ra. Vui lòng thử lại.");
           }
         });
     </script>
