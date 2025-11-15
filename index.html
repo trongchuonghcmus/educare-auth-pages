@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kích hoạt tài khoản - Educare Connect</title>
+    <title>Xác nhận email - Educare Connect</title>
     <style>
       * {
         margin: 0;
@@ -74,18 +74,6 @@
         padding: 20px;
       }
 
-      .status.loading {
-        color: #4a5568;
-      }
-
-      .status.error {
-        color: #e53e3e;
-      }
-
-      .status.success {
-        color: #38a169;
-      }
-
       .spinner {
         border: 3px solid #f3f3f3;
         border-top: 3px solid #667eea;
@@ -103,6 +91,23 @@
         100% {
           transform: rotate(360deg);
         }
+      }
+
+      .icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+      }
+
+      h2 {
+        margin-bottom: 12px;
+        color: #2d3748;
+        font-size: 24px;
+      }
+
+      p {
+        color: #4a5568;
+        line-height: 1.6;
+        margin-bottom: 12px;
       }
 
       .form-group {
@@ -139,6 +144,11 @@
         font-size: 13px;
       }
 
+      .password-requirements ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
       .password-requirements li {
         margin: 4px 0;
         color: #718096;
@@ -163,6 +173,7 @@
         font-weight: 600;
         cursor: pointer;
         transition: transform 0.2s, box-shadow 0.2s;
+        margin-top: 16px;
       }
 
       .btn:hover:not(:disabled) {
@@ -175,6 +186,16 @@
         cursor: not-allowed;
       }
 
+      .btn-secondary {
+        background: #e2e8f0;
+        color: #2d3748;
+      }
+
+      .btn-secondary:hover:not(:disabled) {
+        background: #cbd5e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
       .info-box {
         margin-top: 20px;
         padding: 16px;
@@ -183,6 +204,7 @@
         border-radius: 4px;
         font-size: 14px;
         color: #2c5282;
+        text-align: left;
       }
 
       .error-box {
@@ -193,6 +215,7 @@
         border-radius: 4px;
         font-size: 14px;
         color: #c53030;
+        text-align: left;
       }
 
       .success-box {
@@ -203,6 +226,7 @@
         border-radius: 4px;
         font-size: 14px;
         color: #2f855a;
+        text-align: left;
       }
 
       .footer {
@@ -212,8 +236,49 @@
         font-size: 13px;
       }
 
-      #passwordForm {
-        display: none;
+      .download-links {
+        margin-top: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .download-link {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        background: #f7fafc;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #2d3748;
+        transition: background 0.2s;
+      }
+
+      .download-link:hover {
+        background: #e2e8f0;
+      }
+
+      .download-link-icon {
+        font-size: 32px;
+        margin-right: 12px;
+      }
+
+      .download-link-text {
+        flex: 1;
+      }
+
+      .download-link-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .download-link-desc {
+        font-size: 12px;
+        color: #718096;
+      }
+
+      .hidden {
+        display: none !important;
       }
     </style>
   </head>
@@ -229,85 +294,122 @@
 
       <!-- Content -->
       <div class="content">
-        <!-- Loading Status -->
-        <div id="loadingStatus" class="status loading">
+        <!-- Loading -->
+        <div id="loadingView" class="status">
           <div class="spinner"></div>
-          <p>Đang xử lý yêu cầu của bạn...</p>
-        </div>
-
-        <!-- Error Status -->
-        <div id="errorStatus" class="status error" style="display: none">
-          <h2 style="margin-bottom: 12px">❌ Có lỗi xảy ra</h2>
-          <p id="errorMessage"></p>
+          <p>Đang xử lý yêu cầu...</p>
         </div>
 
         <!-- Password Form -->
-        <form id="passwordForm">
-          <h2 style="margin-bottom: 20px; color: #2d3748">
-            🔐 Tạo mật khẩu mới
-          </h2>
-
-          <div class="form-group">
-            <label for="password">Mật khẩu mới</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Nhập mật khẩu mới"
-              required
-            />
+        <div id="passwordFormView" class="hidden">
+          <div class="status">
+            <div class="icon">✉️</div>
+            <h2>Xác nhận thành công!</h2>
+            <p>
+              Email của bạn đã được xác nhận. Giờ bạn có thể sử dụng ứng dụng Educare Connect.
+            </p>
           </div>
 
-          <div class="form-group">
-            <label for="confirmPassword">Xác nhận mật khẩu</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              placeholder="Nhập lại mật khẩu"
-              required
-            />
+          <div class="success-box">
+            <strong>📱 Bước tiếp theo:</strong><br />
+            • Nhấn nút "Mở ứng dụng" bên dưới để bắt đầu<br />
+            • Đăng nhập bằng email và mật khẩu đã đăng ký<br />
+            • Bắt đầu sử dụng ứng dụng
           </div>
 
-          <div class="password-requirements">
-            <strong>Yêu cầu mật khẩu:</strong>
-            <ul id="requirements">
-              <li id="req-length">• Tối thiểu 8 ký tự</li>
-              <li id="req-match">• Mật khẩu khớp nhau</li>
-            </ul>
-          </div>
-
-          <button type="submit" class="btn" id="submitBtn">
-            Xác nhận mật khẩu
-          </button>
-
-          <div class="info-box">
-            💡 Sau khi tạo mật khẩu, bạn sẽ nhận được nút để mở ứng dụng và đăng
-            nhập.
-          </div>
-        </form>
-
-        <!-- Success Status -->
-        <div id="successStatus" style="display: none">
-          <div class="status success">
-            <h2 style="margin-bottom: 12px">✅ Thành công!</h2>
-            <p>Mật khẩu đã được thiết lập thành công.</p>
-          </div>
-          <button onclick="openAppManually()" class="btn" style="margin-top: 20px">
+          <button onclick="openApp()" class="btn">
             🚀 Mở ứng dụng
           </button>
-          <div class="success-box" style="margin-top: 16px">
-            Nhấn nút trên để mở ứng dụng Educare Connect và đăng nhập bằng email và mật khẩu vừa tạo.
+        </div>
+
+        <!-- Success - Mobile -->
+        <div id="successMobileView" class="hidden">
+          <div class="status">
+            <div class="icon">✅</div>
+            <h2>Email đã xác nhận!</h2>
+            <p>
+              Tài khoản của bạn đã sẵn sàng. Nhấn nút bên dưới để mở ứng
+              dụng và đăng nhập.
+            </p>
+          </div>
+
+          <button onclick="openApp()" class="btn">
+            🚀 Mở ứng dụng
+          </button>
+
+          <div class="success-box">
+            <strong>📱 Bước tiếp theo:</strong><br />
+            Sau khi mở ứng dụng, đăng nhập bằng email và mật khẩu bạn đã đăng ký.
           </div>
         </div>
 
-        <!-- Error Result -->
-        <div id="errorResult" style="display: none">
-          <div class="status error">
-            <h2 style="margin-bottom: 12px">❌ Lỗi</h2>
-            <p id="errorResultMessage"></p>
+        <!-- Success - Desktop -->
+        <div id="successDesktopView" class="hidden">
+          <div class="status">
+            <div class="icon">✅</div>
+            <h2>Email đã xác nhận!</h2>
+            <p>
+              Tài khoản của bạn đã sẵn sàng. Vui lòng tải ứng dụng Educare
+              Connect trên thiết bị di động để tiếp tục.
+            </p>
           </div>
-          <button onclick="location.reload()" class="btn" style="margin-top: 20px; background: #e53e3e">
+
+          <div class="info-box">
+            <strong>📱 Hướng dẫn tiếp theo:</strong><br />
+            1. Tải ứng dụng Educare Connect từ các link bên dưới<br />
+            2. Mở ứng dụng và đăng nhập bằng email và mật khẩu đã đăng ký<br />
+            3. Bắt đầu sử dụng ứng dụng
+          </div>
+
+          <div class="download-links">
+            <a
+              href="#"
+              class="download-link"
+              onclick="alert('Link Google Play sẽ được cập nhật sau khi ứng dụng được publish'); return false;"
+            >
+              <div class="download-link-icon">📱</div>
+              <div class="download-link-text">
+                <div class="download-link-title">Google Play Store</div>
+                <div class="download-link-desc">
+                  Dành cho thiết bị Android
+                </div>
+              </div>
+            </a>
+
+            <a
+              href="#"
+              class="download-link"
+              onclick="alert('Link APK sẽ được cập nhật sau khi build xong'); return false;"
+            >
+              <div class="download-link-icon">📦</div>
+              <div class="download-link-text">
+                <div class="download-link-title">Tải APK trực tiếp</div>
+                <div class="download-link-desc">
+                  Nếu không có Google Play
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Error -->
+        <div id="errorView" class="hidden">
+          <div class="status">
+            <div class="icon">❌</div>
+            <h2>Có lỗi xảy ra</h2>
+            <p id="errorMessage"></p>
+          </div>
+
+          <button onclick="location.reload()" class="btn btn-secondary">
             🔄 Thử lại
           </button>
+
+          <div class="error-box">
+            <strong>💡 Gợi ý:</strong><br />
+            • Kiểm tra kết nối internet<br />
+            • Link có thể đã hết hạn, vui lòng yêu cầu giáo viên gửi lại<br />
+            • Liên hệ hỗ trợ nếu vấn đề vẫn tiếp diễn
+          </div>
         </div>
       </div>
 
@@ -324,6 +426,34 @@
     </div>
 
     <script>
+      // Detect if mobile device
+      function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+      }
+
+      // Show view
+      function showView(viewId) {
+        const views = [
+          "loadingView",
+          "passwordFormView",
+          "successMobileView",
+          "successDesktopView",
+          "errorView",
+        ];
+        views.forEach((id) => {
+          document.getElementById(id).classList.add("hidden");
+        });
+        document.getElementById(viewId).classList.remove("hidden");
+      }
+
+      // Show error
+      function showError(message) {
+        document.getElementById("errorMessage").textContent = message;
+        showView("errorView");
+      }
+
       // Parse URL hash parameters
       function parseHashParams() {
         const hash = window.location.hash.substring(1);
@@ -337,127 +467,11 @@
         };
       }
 
-      // Show error
-      function showError(message) {
-        document.getElementById("loadingStatus").style.display = "none";
-        document.getElementById("errorStatus").style.display = "block";
-        document.getElementById("errorMessage").textContent = message;
-      }
-
-      // Show password form
-      function showPasswordForm() {
-        document.getElementById("loadingStatus").style.display = "none";
-        document.getElementById("passwordForm").style.display = "block";
-      }
-
-      // Show success
-      function showSuccess() {
-        document.getElementById("passwordForm").style.display = "none";
-        document.getElementById("successStatus").style.display = "block";
-      }
-
-      // Show error result
-      function showErrorResult(message) {
-        document.getElementById("passwordForm").style.display = "none";
-        document.getElementById("errorResult").style.display = "block";
-        document.getElementById("errorResultMessage").textContent = message;
-      }
-
       // Open app with deep link
-      function openAppManually() {
+      function openApp() {
         const accessToken = sessionStorage.getItem("access_token");
         const refreshToken = sessionStorage.getItem("refresh_token");
-        openApp(accessToken, refreshToken);
-      }
-
-      // Validate password
-      function validatePassword() {
-        const password = document.getElementById("password").value;
-        const confirmPassword =
-          document.getElementById("confirmPassword").value;
-
-        const lengthValid = password.length >= 8;
-        const matchValid = password === confirmPassword && password.length > 0;
-
-        document.getElementById("req-length").className = lengthValid
-          ? "valid"
-          : "invalid";
-        document.getElementById("req-match").className = matchValid
-          ? "valid"
-          : "invalid";
-
-        return lengthValid && matchValid;
-      }
-
-      // Accept invite and set password with Supabase
-      async function acceptInviteAndSetPassword(accessToken, password) {
-        console.log("Setting password for invited user...");
-
-        const SUPABASE_URL = "https://jlmjhcwmvpxvmuppzdks.supabase.co";
-        const SUPABASE_ANON_KEY =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpsbWpoY3dtdnB4dm11cHB6ZGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA4MDUwNjQsImV4cCI6MjA0NjM4MTA2NH0.QgYN5Lg0FZS1q5JGLLwdH3fS5m3Fj3yAm31DgvHG2AQ";
-
-        try {
-          // Step 1: Verify the token by getting user info
-          console.log("Step 1: Verifying invite token...");
-          const verifyResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              apikey: SUPABASE_ANON_KEY,
-            },
-          });
-
-          if (!verifyResponse.ok) {
-            const error = await verifyResponse.json();
-            console.error("Token verification failed:", error);
-            throw new Error(error.msg || "Token không hợp lệ hoặc đã hết hạn");
-          }
-
-          const userData = await verifyResponse.json();
-          console.log("User verified:", userData);
-
-          // Step 2: Update password
-          console.log("Step 2: Updating password...");
-          const updateResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-              apikey: SUPABASE_ANON_KEY,
-            },
-            body: JSON.stringify({
-              password: password,
-            }),
-          });
-
-          if (!updateResponse.ok) {
-            const error = await updateResponse.json();
-            console.error("Password update failed:", error);
-            throw new Error(error.msg || "Không thể cập nhật mật khẩu");
-          }
-
-          const result = await updateResponse.json();
-          console.log("Password updated successfully:", result);
-
-          // Return both user and session data
-          return {
-            user: result.user || userData,
-            session: result,
-          };
-        } catch (error) {
-          console.error("Error in acceptInviteAndSetPassword:", error);
-          throw error;
-        }
-      }
-
-      // Open app with deep link
-      function openApp(accessToken, refreshToken) {
-        const deepLink = `educareconnect://auth?access_token=${accessToken}&refresh_token=${refreshToken}&type=invite`;
-
-        console.log("Opening app with deep link:", deepLink);
-        
-        // Try to open the app
+        const deepLink = `educareconnect://auth?access_token=${accessToken}&refresh_token=${refreshToken}&type=confirmed`;
         window.location.href = deepLink;
       }
 
@@ -476,7 +490,7 @@
         // Check for required tokens
         if (!params.access_token) {
           showError(
-            "Link không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu giáo viên gửi lại lời mời."
+            "Link không hợp lệ hoặc đã hết hạn. Vui lòng kiểm tra email hoặc đăng ký lại."
           );
           return;
         }
@@ -487,70 +501,15 @@
           sessionStorage.setItem("refresh_token", params.refresh_token);
         }
 
-        // Show password form
+        // Show success view based on device
         setTimeout(() => {
-          showPasswordForm();
+          if (isMobileDevice()) {
+            showView("passwordFormView"); // On mobile, show direct success with button
+          } else {
+            showView("successDesktopView"); // On desktop, show download links
+          }
         }, 500);
       });
-
-      // Password input validation
-      document.getElementById("password")?.addEventListener("input", () => {
-        validatePassword();
-      });
-
-      document
-        .getElementById("confirmPassword")
-        ?.addEventListener("input", () => {
-          validatePassword();
-        });
-
-      // Form submission
-      document
-        .getElementById("passwordForm")
-        ?.addEventListener("submit", async (e) => {
-          e.preventDefault();
-
-          if (!validatePassword()) {
-            alert("Vui lòng nhập mật khẩu hợp lệ");
-            return;
-          }
-
-          const password = document.getElementById("password").value;
-          const accessToken = sessionStorage.getItem("access_token");
-          const refreshToken = sessionStorage.getItem("refresh_token");
-
-          const submitBtn = document.getElementById("submitBtn");
-          submitBtn.disabled = true;
-          submitBtn.textContent = "Đang xử lý...";
-
-          try {
-            // Accept invite and set password via Supabase API
-            const result = await acceptInviteAndSetPassword(
-              accessToken,
-              password
-            );
-
-            console.log("Success:", result);
-
-            // Extract new tokens if available
-            const newAccessToken = result.session?.access_token || accessToken;
-            const newRefreshToken =
-              result.session?.refresh_token || refreshToken;
-
-            // Store updated tokens
-            sessionStorage.setItem("access_token", newAccessToken);
-            if (newRefreshToken) {
-              sessionStorage.setItem("refresh_token", newRefreshToken);
-            }
-
-            // Show success with button
-            showSuccess();
-
-          } catch (error) {
-            console.error("Error:", error);
-            showErrorResult(error.message || "Đã có lỗi xảy ra. Vui lòng thử lại.");
-          }
-        });
     </script>
   </body>
 </html>
